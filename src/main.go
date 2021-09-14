@@ -18,6 +18,7 @@ func main() {
 	end := "cat"
 	data := "data/dictionary"
 
+	// Setting the dictionary
 	dictionary := make(map[string]struct{})
 
 	file, err := os.Open(data)
@@ -32,7 +33,9 @@ func main() {
 		dictionary[strings.ToLower(scanner.Text())] = struct{}{}
 	}
 
+	// Checking for start word and ending word in the dictionary
 	if existInDictionary(start, dictionary) && existInDictionary(end, dictionary) {
+
 		var solution []string
 		found := findPath(start, end, dictionary, &solution)
 
@@ -54,9 +57,11 @@ func existInDictionary(word string, dictionary map[string]struct{}) bool {
 
 // TODO: Returns the neighbours of a word
 func createNeighbours(word string, dictionary map[string]struct{}) map[string]struct{} {
+
 	neighbours := make(map[string]struct{})
 	for letter := 'a'; letter <= 'z'; letter++ {
 
+		// Searching neighbours by adding letters
 		for i := range word {
 			neighbour := word[:i] + string(letter) + word[i:]
 
@@ -65,6 +70,7 @@ func createNeighbours(word string, dictionary map[string]struct{}) map[string]st
 			}
 		}
 
+		// Searching neighbours by deleting letters
 		for i := range word {
 			neighbour := word[:i] + word[i+1:]
 			if _, exist := dictionary[neighbour]; exist && neighbour != word {
@@ -72,6 +78,7 @@ func createNeighbours(word string, dictionary map[string]struct{}) map[string]st
 			}
 		}
 
+		// Searching neighbours by changing letters
 		for i := range word {
 			neighbour := word[:i] + string(letter) + word[i+1:]
 			if _, exist := dictionary[neighbour]; exist && neighbour != word {
@@ -83,7 +90,7 @@ func createNeighbours(word string, dictionary map[string]struct{}) map[string]st
 	return neighbours
 }
 
-// Returns the solution if exists
+// Returns the solution path
 func getSolutionArray(solution *[]string, expandedNodes *Node) {
 
 	if expandedNodes.previousNode != nil {
@@ -103,9 +110,11 @@ func findPath(start, end string, dictionary map[string]struct{}, solution *[]str
 		neighbours = nil
 
 		if graph[i].word == end {
+			// Solution found
 			getSolutionArray(solution, &graph[i])
 			return true
 		} else {
+			// Node(word) expansion
 			neighbours = createNeighbours(graph[i].word, dictionary)
 
 			for key := range neighbours {
