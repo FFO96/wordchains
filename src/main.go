@@ -33,7 +33,14 @@ func main() {
 	}
 
 	if existInDictionary(start, dictionary) && existInDictionary(end, dictionary) {
-		//TODO: findPath call
+		var solution []string
+		found := findPath(start, end, dictionary, &solution)
+
+		if found {
+			fmt.Println(solution)
+		} else {
+			fmt.Println("There is no path between the words")
+		}
 	} else {
 		fmt.Println("The starting and ending words must be registered in the dictionary")
 	}
@@ -76,8 +83,41 @@ func createNeighbours(word string, dictionary map[string]struct{}) map[string]st
 	return neighbours
 }
 
-//TODO: Returns the solution if exists
-func getSolutionList() {}
+// Returns the solution if exists
+func getSolutionArray(solution *[]string, expandedNodes *Node) {
 
-//TODO: Find the path of the solution if exists
-func findPath() {}
+	if expandedNodes.previousNode != nil {
+		getSolutionArray(solution, expandedNodes.previousNode)
+	}
+	*solution = append(*solution, expandedNodes.word)
+}
+
+// Find the path of the solution if exists
+func findPath(start, end string, dictionary map[string]struct{}, solution *[]string) bool {
+
+	graph := []Node{{word: start, previousNode: nil}}
+	wordsRecord := make(map[string]struct{})
+	neighbours := make(map[string]struct{})
+
+	for i := 0; i < len(graph); i++ {
+		neighbours = nil
+
+		if graph[i].word == end {
+			getSolutionArray(solution, &graph[i])
+			return true
+		} else {
+			neighbours = createNeighbours(graph[i].word, dictionary)
+
+			for key := range neighbours {
+				if _, exist := wordsRecord[key]; !exist {
+					wordsRecord[key] = struct{}{}
+					graph = append(graph, Node{word: key, previousNode: &graph[i]})
+				}
+			}
+		}
+
+	}
+	// If there is no path between the words you can print the words record to see the words found
+	//fmt.Println(wordsRecord)
+	return false
+}
