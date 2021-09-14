@@ -15,7 +15,7 @@ func TestCreateNeighbours(t *testing.T) {
 	dictionary := make(map[string]struct{})
 
 	// Setting the expected neighbours for the word "dog"
-	data := "data/expected_neighbours"
+	data := "../data/expected_neighbours"
 
 	file, err := os.Open(data)
 
@@ -29,7 +29,7 @@ func TestCreateNeighbours(t *testing.T) {
 		expectedNeighbours[strings.ToLower(scanner.Text())] = struct{}{}
 	}
 	// Setting the dictionary
-	data = "data/dictionary"
+	data = "../data/dictionary"
 
 	file, err = os.Open(data)
 
@@ -70,7 +70,7 @@ func TestExistInDictionary(t *testing.T) {
 
 	// Setting the dictionary
 	dictionary := make(map[string]struct{})
-	data := "data/dictionary"
+	data := "../data/dictionary"
 
 	file, err := os.Open(data)
 
@@ -98,11 +98,10 @@ func TestExistInDictionary(t *testing.T) {
 func TestFindPath(t *testing.T) {
 
 	var solution []string
-	expectedSolution := []string{"dog", "dot", "cot", "cat"}
 
 	// Setting the dictionary
 	dictionary := make(map[string]struct{})
-	data := "data/dictionary"
+	data := "../data/dictionary"
 
 	file, err := os.Open(data)
 
@@ -116,15 +115,13 @@ func TestFindPath(t *testing.T) {
 		dictionary[strings.ToLower(scanner.Text())] = struct{}{}
 	}
 
-	// Testing expected TRUE and expected solution
-	found := findPath("dog", "cat", dictionary, &solution)
-	if found == false || !reflect.DeepEqual(solution, expectedSolution) {
+	// Testing expected TRUE
+	if findPath("dog", "cat", dictionary, &solution) == false {
 		t.Fail()
 	}
 
 	// Testing expected FALSE
-	found = findPath("paratrooper", "cat", dictionary, &solution)
-	if found == true {
+	if findPath("paratrooper", "cat", dictionary, &solution) == true {
 		t.Fail()
 	}
 }
