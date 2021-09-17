@@ -23,5 +23,10 @@ The decision to go through the graph with a [breadth-first search](#bfs) is to f
 - <a id="bfs">**Breadth-first search**</a>: Exploration of all nodes at the present depth prior to moving on to the nodes at the next depth level. 
 - <a id="dfs">**Depth-first search**</a>: Exploration of a full branch prior to visit the same level nodes.
 
+## Run the progam
+
+- **Normal program**</a>: go run src/main.go
+- **Testing**</a>: go test src/main_test.go src/main.go -v
+
 ## Reference
 Word-chain problem: [http://codekata.com/kata/kata19-word-chains/](http://codekata.com/kata/kata19-word-chains/)
